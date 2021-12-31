@@ -6,6 +6,17 @@ var Mortgage = {
   annual_homeowner_insurance: 800,    // additional cost of homeowner's insurance
 }
 
+function fetchMortgageParameters() {
+  // Retrieves the mortgage details from the form in the page
+  var mortgage = new FormData(document.getElementById("input_form"))
+  var deets = {}
+  for(var pair of mortgage.entries()) {
+    deets[pair[0]] = pair[1];
+  }
+  console.log(deets)
+  return deets;
+}
+
 function calculateMonthlyPayments(mortgage) {
   // Calculates the assumed monthly payment amount
   monthly_interest = mortgage['annual_interest_rate'] / 12.0 / 100.0;

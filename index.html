@@ -20,6 +20,23 @@
   </header>
 
   <section>
+    <article id="inputs">
+      <div>
+        <form id="input_form" onsubmit="fetchMortgageParameters()">
+          <label for="property_cost">Property Cost:  £</label>
+          <input type="number" id="property_cost" name="property_cost" value=210000><br>
+          <label for="deposit">Deposit:  £</label>
+          <input type="number" id="deposit" name="deposit" value=10000><br>
+          <label for="years">Duration (years):  </label>
+          <input type="number" id="years" name="years" value=25><br>
+          <label for="annual_interest_rate">Interest rate (%):  </label>
+          <input type="number" id="annual_interest_rate" name="annual_interest_rate" value=2.5><br>
+          <label for="annual_homeowner_insurance">Homeowner's insurance (Annual, optional):  £</label>
+          <input type="number" id="annual_homeowner_insurance" name="annual_homeowner_insurance" value=0><br>
+        </form>
+      </div>
+      <button id="go_button" onclick="fetchMortgageParameters();">Calculate</button>
+    </article>
     <article>
       <div id="calc_space"></div>
     </article>
