@@ -3,6 +3,10 @@ function unpack(rows, key) {
   return rows.map(function(row) {return row[key]; });
 }
 
+function subset(df, columns) {
+  //Utility, select
+}
+
 function prettifyTable(df) {
   // Convenience function essentially for printing out my tables to QA
   strout = "<br />" + df.columns.join(", ") + "<br />";   // Column names
@@ -10,33 +14,32 @@ function prettifyTable(df) {
   return strout;
 }
 
-function createTraces(data, xColumn="date", traceType="scatter") {
+function createTraces(data, seriesColumns, xColumn="date", hoverColumn=null, traceType="scatter", lineFill=false) {
   // Utility, unpacks a data structure into an array of trace objects for
   // use with plotly
-  var columnNames = data['columns'];
   var traces = [];
 
-  for(let i = 0; i < columnNames.length; i++) {
-    var name = columnNames[i];
+  for(let i = 0; i < seriesColumns.length; i++) {
+    var name = seriesColumns[i];
+    // Sanity check columns are not x axis or hover text
     if(name == xColumn) {continue; }
+    if(name == hoverColumn) {continue; }
     trace = {
       name: name,
       type: traceType,
       x: unpack(data, xColumn),
       y: unpack(data, name)
     }
-    if (name.includes("smoothed") == false) {
-      trace['visible'] = "legendonly";
+    // Optional fill
+    if (lineFill == true) {
+      console.log("here");
+      trace['fill'] = 'tonexty';
+    }
+    // Optional hovertext column
+    if (!hoverColumn == false) {
+      trace['text'] = unpack(data, hoverColumn).map(element => element.toString() + " " + hoverColumn);
     }
     traces.push(trace);
   }
   return traces;
-}
-
-var Mortgage = {
-  deposit: 10000.0,                   // Initial deposit
-  years: 30,                          // Years over which mortgage is repaid
-  property_cost: 210000.0,
-  annual_interest_rate: 3.5,          // Interest rate is a %
-  annual_homeowner_insurance: 800,    // additional cost of homeowner's insurance
 }

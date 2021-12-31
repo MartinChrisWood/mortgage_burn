@@ -11,7 +11,7 @@
   <link rel="shortcut icon" href="#" />
   <title>Mortgage Burn</title>
   <script src="lib/d3.min.js"></script>
-  <script src="lib/plotly-latest.min.js"></script>
+  <script src="lib/plotly-2.8.3.min.js"></script>
   <script src="src/helper.js"></script>
 </head>
 
@@ -25,24 +25,37 @@
     <article id="inputs">
       <div>
         <form id="input_form" onsubmit="fetchMortgageParameters()">
-          <label for="property_cost">Property Cost:  £</label>
-          <input type="number" id="property_cost" name="property_cost" value=210000><br>
-          <label for="deposit">Deposit:  £</label>
-          <input type="number" id="deposit" name="deposit" value=10000><br>
-          <label for="years">Duration (years):  </label>
-          <input type="number" id="years" name="years" value=25><br>
-          <label for="annual_interest_rate">Interest rate (%):  </label>
-          <input type="number" id="annual_interest_rate" name="annual_interest_rate" value=2.5><br>
-          <label for="annual_homeowner_insurance">Homeowner's insurance (Annual, optional):  £</label>
-          <input type="number" id="annual_homeowner_insurance" name="annual_homeowner_insurance" value=0><br>
+          <table id="input_table">
+            <tr>
+              <td><label for="property_cost">Property Cost:  £</label></td>
+              <td><input type="number" id="property_cost" name="property_cost" value=210000></td>
+            </tr>
+            <tr>
+              <td><label for="deposit">Deposit:  £</label></td>
+              <td><input type="number" id="deposit" name="deposit" value=10000></td>
+            </tr>
+            <tr>
+              <td><label for="years">Duration (years):  </label></td>
+              <td><input type="number" id="years" name="years" value=25></td>
+            </tr>
+            <tr>
+              <td><label for="annual_interest_rate">Interest rate (%):  </label></td>
+              <td><input type="number" id="annual_interest_rate" name="annual_interest_rate" value=2.5></td>
+            </tr>
+            <tr>
+              <td><label for="annual_homeowner_insurance">Homeowner's insurance (Annual, optional):  £</label></td>
+              <td><input type="number" id="annual_homeowner_insurance" name="annual_homeowner_insurance" value=0></td>
+            </tr>
+          </table>
         </form>
       </div>
       <button id="go_button" onclick="main();">Calculate</button>
     </article>
 
     <article>
-      <div id="calc_space"></div>
+      <div id="pay_plot"></div>
       <div id="plan_plot"></div>
+      <div id="calc_space"></div>
     </article>
   </section>
   <script src="src/calculations.js"></script>
