@@ -10,6 +10,8 @@
   <!-- Suppresses warning about favicon icon (but I should add one) -->
   <link rel="shortcut icon" href="#" />
   <title>Mortgage Burn</title>
+  <script src="lib/d3.min.js"></script>
+  <script src="lib/plotly-latest.min.js"></script>
   <script src="src/helper.js"></script>
 </head>
 
@@ -35,13 +37,14 @@
           <input type="number" id="annual_homeowner_insurance" name="annual_homeowner_insurance" value=0><br>
         </form>
       </div>
-      <button id="go_button" onclick="fetchMortgageParameters();">Calculate</button>
+      <button id="go_button" onclick="main();">Calculate</button>
     </article>
+
     <article>
       <div id="calc_space"></div>
+      <div id="plan_plot"></div>
     </article>
   </section>
-
   <script src="src/calculations.js"></script>
 
 </body>
