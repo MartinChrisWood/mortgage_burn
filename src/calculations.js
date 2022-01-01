@@ -64,7 +64,9 @@ function plotPlan(df) {
                              xColumn="month",
                              hoverColumn="of_which_interest");
   // Add title/aesthetics/labels
-  var layout = {title: "How much remains to pay"};
+  var layout = {title: "How much remains to pay",
+                xaxis: {title: "Month of repayment"},
+                yaxis: {title: "Amount (£)"}};
   // Behaviours
   var config = {responsive: true};
   Plotly.newPlot("plan_plot", trace_array, layout, config);
@@ -77,7 +79,9 @@ function plotPayments(df) {
                              hoverColumn="month",
                              lineFill=true);
   // Add title/aesthetics/labels
-  var layout = {title: "How your monthly payments divide"};
+  var layout = {title: "How your monthly payments divide",
+                xaxis: {title: "Month of repayment"},
+                yaxis: {title: "Amount (£)"}};
   // Behaviours
   var config = {responsive: true};
   Plotly.newPlot("pay_plot", trace_array, layout, config);
