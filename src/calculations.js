@@ -11,40 +11,43 @@ function fetchMortgageParameters() {
 }
 
 function calculateMonthlyPayments(mortgage) {
-  // Calculates the assumed monthly payment amount
-  monthly_interest = mortgage['annual_interest_rate'] / 12.0 / 100.0;
-  principal = mortgage['property_cost'] - mortgage['deposit'];
-  n_payments = mortgage['years'] * 12.0;
-
-  monthly_payment = (monthly_interest * principal) /
-                    (1.0 - ((1.0 + monthly_interest) ** -n_payments));
-
-  return monthly_payment;
+  // Calculates payment statistics for the mortgage
+  var stats = {monthly_interest: mortgage['annual_interest_rate'] / 12.0 / 100.0,
+               n_payments: mortgage['years'] * 12.0,
+               principal: mortgage['property_cost'] - mortgage['deposit']}
+  stats['monthly_payment'] = (stats.monthly_interest * stats. principal) /
+                             (1.0 - ((1.0 + stats.monthly_interest) ** -stats.n_payments));
+  // Combine original mortgage details and derived stats into one dict
+  return stats;
 }
+
+function buildMortgage() {
+  // build the mortgage stats/parameter dict
+  mortgage = fetchMortgageParameters();
+  stats = calculateMonthlyPayments(mortgage);
+  return Object.assign({}, mortgage, stats);
+}
+
+
 
 function tabulatePayments(mortgage) {
   // Generate a monthly table of our what's paid to where
   // Need to record month, payment, payment of interest, payment of principal, remaining to-pay and principal
-  monthly_payment = calculateMonthlyPayments(mortgage);
-  n_payments = mortgage['years'] * 12.0;
-
   var df = [];
-  remaining_principal = mortgage['property_cost'] - mortgage['deposit'];
-  remaining_total = n_payments * monthly_payment;
-  for(let i = 0; i < n_payments; i++) {
+  remaining_total = mortgage.n_payments * mortgage.monthly_payment;
+  remaining_principal = mortgage.principal;
+  for(let i = 0; i < mortgage.n_payments; i++) {
 
     // Calculate the payment components
-    interest_component = (mortgage['annual_interest_rate'] / 12.0 / 100.0) * remaining_principal;
-    principal_component = monthly_payment - interest_component;
+    interest_component = (mortgage.annual_interest_rate / 12.0 / 100.0) * remaining_principal;
+    principal_component = mortgage.monthly_payment - interest_component;
     remaining_principal = remaining_principal - principal_component;
-    remaining_total = remaining_total - monthly_payment;
+    remaining_total = remaining_total - mortgage.monthly_payment;
 
     // Record that month
-    //of_which_interest: interest_component.toFixed(2),
-    //of_which_principal: principal_component.toFixed(2),
     df.push({month: i+1,
-             payment_amount: monthly_payment.toFixed(2),
-             payments_made: ((i+1.0) * monthly_payment).toFixed(2),
+             payment_amount: mortgage.monthly_payment.toFixed(2),
+             payments_made: ((i+1.0) * mortgage.monthly_payment).toFixed(2),
              of_which_principal: principal_component.toFixed(2),
              of_which_interest: interest_component.toFixed(2),
              remaining_principal: remaining_principal.toFixed(2),
@@ -82,11 +85,10 @@ function plotPayments(df) {
 
 function main() {
   // Primary, called from user button-click
-  mortgage = fetchMortgageParameters();
+  mortgage = buildMortgage();
   df = tabulatePayments(mortgage);
   plotPayments(df);
   plotPlan(df);
+  writeDictToTable(mortgage, "stats_out");
   // document.getElementById("calc_space").innerHTML = prettifyTable(df);
 }
-
-main()

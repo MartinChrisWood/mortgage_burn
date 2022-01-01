@@ -6,7 +6,7 @@
   <meta name="description" content="Calculates and visualises the true full cost of a mortgage.">
   <meta name="author" content="Ozwald Cavendish">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <link type="text/css" rel="stylesheet" href="css/styles.css"> -->
+  <link type="text/css" rel="stylesheet" href="css/styles.css">
   <!-- Suppresses warning about favicon icon (but I should add one) -->
   <link rel="shortcut icon" href="#" />
   <title>Mortgage Burn</title>
@@ -43,21 +43,30 @@
               <td><input type="number" id="annual_interest_rate" name="annual_interest_rate" value=2.5></td>
             </tr>
             <tr>
-              <td><label for="annual_homeowner_insurance">Homeowner's insurance (Annual, optional):  £</label></td>
+              <td><label for="annual_homeowner_insurance">Homeowner's insurance (annual, optional):  £</label></td>
               <td><input type="number" id="annual_homeowner_insurance" name="annual_homeowner_insurance" value=0></td>
             </tr>
           </table>
         </form>
       </div>
       <button id="go_button" onclick="main();">Calculate</button>
+      <hr>
+      <h1>Repayment Raw Stats</h1>
+      <div id="stats_out"></div>
     </article>
 
-    <article>
+    <article class="output">
       <div id="pay_plot"></div>
+      <hr>
       <div id="plan_plot"></div>
-      <div id="calc_space"></div>
     </article>
+
   </section>
+
+  <footer>
+    <p>This tool exists to help you see what you'll be committing to if you take out a mortgage.</p>
+  </footer>
+
   <script src="src/calculations.js"></script>
 
 </body>
