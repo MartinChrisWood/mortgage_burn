@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="keywords" content="Mortgage interest visualisation calculator">
+  <meta name="description" content="Calculates and visualises the true full cost of a mortgage.">
+  <meta name="author" content="Ozwald Cavendish">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link type="text/css" rel="stylesheet" href="css/styles.css">
+  <!-- Suppresses warning about favicon icon (but I should add one) -->
+  <link rel="shortcut icon" href="#" />
+  <title>Mortgage Burn</title>
+  <script src="lib/d3.min.js"></script>
+  <script src="lib/plotly-2.8.3.min.js"></script>
+  <script src="src/helper.js"></script>
+</head>
+
+<body>
+
+  <header>
+    <h2>Mortgage calculations</h2>
+  </header>
+
+  <section>
+    <article id="inputs">
+      <div>
+        <form id="input_form" onsubmit="fetchMortgageParameters()">
+          <table id="input_table">
+            <tr>
+              <td><label for="property_cost">Property Cost:  £</label></td>
+              <td><input type="number" id="property_cost" name="property_cost" value=210000></td>
+            </tr>
+            <tr>
+              <td><label for="deposit">Deposit:  £</label></td>
+              <td><input type="number" id="deposit" name="deposit" value=10000></td>
+            </tr>
+            <tr>
+              <td><label for="years">Duration (years):  </label></td>
+              <td><input type="number" id="years" name="years" value=25></td>
+            </tr>
+            <tr>
+              <td><label for="annual_interest_rate">Interest rate (%):  </label></td>
+              <td><input type="number" id="annual_interest_rate" name="annual_interest_rate" value=2.5></td>
+            </tr>
+            <tr>
+              <td><label for="annual_homeowner_insurance">Homeowner's insurance (annual, optional):  £</label></td>
+              <td><input type="number" id="annual_homeowner_insurance" name="annual_homeowner_insurance" value=0></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      <button id="go_button" onclick="main();">Calculate</button>
+      <hr>
+      <h1>Repayment Raw Stats</h1>
+      <div id="stats_out"></div>
+    </article>
+
+    <article class="output">
+      <div id="pay_plot"></div>
+      <hr>
+      <div id="plan_plot"></div>
+    </article>
+
+  </section>
+
+  <footer>
+    <p>This tool exists to help you see what you'll be committing to if you take out a mortgage.</p>
+  </footer>
+
+  <script src="src/calculations.js"></script>
+
+</body>
