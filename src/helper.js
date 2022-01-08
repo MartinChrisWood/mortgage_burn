@@ -14,34 +14,13 @@ function prettifyTable(df) {
   return strout;
 }
 
-function createTraces(data, seriesColumns, xColumn="date", hoverColumn=null, traceType="scatter", lineFill=false) {
-  // Utility, unpacks a data structure into an array of trace objects for
-  // use with plotly
-  var traces = [];
-
-  for(let i = 0; i < seriesColumns.length; i++) {
-    var name = seriesColumns[i];
-    // Sanity check columns are not x axis or hover text
-    if(name == xColumn) {continue; }
-    if(name == hoverColumn) {continue; }
-    trace = {
-      name: name,
-      type: traceType,
-      x: unpack(data, xColumn),
-      y: unpack(data, name)
-    }
-    // Optional fill
-    if (lineFill == true) {
-      console.log("here");
-      trace['fill'] = 'tonexty';
-    }
-    // Optional hovertext column
-    if (!hoverColumn == false) {
-      trace['text'] = unpack(data, hoverColumn).map(element => element.toString() + " " + hoverColumn);
-    }
-    traces.push(trace);
+function prettifyVariableName(string, sep="_") {
+  // Takes an underscore_separated_variable_name and does some simple formatting,
+  // to output 'Underscore Separated Variable Name'
+  function capitaliseFirst(string) {
+    return string.slice(0, 1).toUpperCase() + string.slice(1);
   }
-  return traces;
+  return string.split(sep).map(capitaliseFirst).join(" ");
 }
 
 function prettifyNumber(primitive, significance=2){
@@ -70,6 +49,37 @@ function prettifyNumber(primitive, significance=2){
   return primitive;
 }
 
+
+function createTraces(data, seriesColumns, xColumn="date", hoverColumn=null, traceType="scatter", lineFill=false) {
+  // Utility, unpacks a data structure into an array of trace objects for
+  // use with plotly
+  var traces = [];
+
+  for(let i = 0; i < seriesColumns.length; i++) {
+    var name = seriesColumns[i];
+    // Sanity check columns are not x axis or hover text
+    if(name == xColumn) {continue; }
+    if(name == hoverColumn) {continue; }
+    trace = {
+      name: prettifyVariableName(name),
+      type: traceType,
+      x: unpack(data, xColumn),
+      y: unpack(data, name)
+    }
+    // Optional fill
+    if (lineFill == true) {
+      console.log("here");
+      trace['fill'] = 'tonexty';
+    }
+    // Optional hovertext column
+    if (!hoverColumn == false) {
+      trace['text'] = unpack(data, hoverColumn).map(element => element.toString() + " " + hoverColumn);
+    }
+    traces.push(trace);
+  }
+  return traces;
+}
+
 function writeDictToTable(dict, div_id, wipe=true) {
   // Takes a dict (Javascript Object with only data) and creates HTML table in a div
   // Adapted from https://stackoverflow.com/a/30616912
@@ -79,6 +89,7 @@ function writeDictToTable(dict, div_id, wipe=true) {
   }
 
   var table = document.createElement('TABLE');
+  table.setAttribute("class", "tabulate_output");
 
   var table_body = document.createElement('TBODY');
   table.appendChild(table_body);
@@ -86,11 +97,22 @@ function writeDictToTable(dict, div_id, wipe=true) {
   for (const [key, value] of Object.entries(dict)) {
     var tr = document.createElement('TR');
     table_body.appendChild(tr);
-    var td1 = document.createElement('TD'); td1.appendChild(document.createTextNode(key));
+    var td1 = document.createElement('TD'); td1.appendChild(document.createTextNode(prettifyVariableName(key)));
     var td2 = document.createElement('TD'); td2.appendChild(document.createTextNode(prettifyNumber(value)));
     tr.appendChild(td1);
     tr.appendChild(td2);
   }
   target_div.appendChild(table);
   return null;
+}
+
+function reload(elementId){
+    // Forces the refresh of an element
+    // From https://stackoverflow.com/a/10914389
+    var container = document.getElementById(elementId);
+    var content = container.innerHTML;
+    container.innerHTML= content;
+
+   // Confirm
+    console.log("Refreshed");
 }
