@@ -22,8 +22,9 @@ article {
   float: left;
   width: 33%;
   min-height: 400px;
+  min-width: 350px;
   padding: 20px;
-  background-color: #fefbf5;
+  background-color: white;
 }
 
 .output {
@@ -52,17 +53,22 @@ table {
   display: block;
 }
 
+.tabulate_output {
+  border: 1px solid black;
+}
+
 footer {
   background-color: white;
   padding: 10px;
   text-align: center;
+  min-width: 400px;
   color: darkGrey;
 }
 
 /* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other,
 on small screens */
 @media (max-width: 700px) {
-  article, .output {
+  article, section, .output {
     width: 100%;
     height: auto;
   }

@@ -13,10 +13,11 @@ function fetchMortgageParameters() {
 function calculateMonthlyPayments(mortgage) {
   // Calculates payment statistics for the mortgage
   var stats = {monthly_interest: mortgage['annual_interest_rate'] / 12.0 / 100.0,
+               monthly_insurance: mortgage['annual_homeowner_insurance'] / 12.0,
                n_payments: mortgage['years'] * 12.0,
                principal: mortgage['property_cost'] - mortgage['deposit']}
-  stats['monthly_payment'] = (stats.monthly_interest * stats. principal) /
-                             (1.0 - ((1.0 + stats.monthly_interest) ** -stats.n_payments));
+  stats['monthly_payment'] = stats['monthly_insurance'] + ((stats.monthly_interest * stats. principal) /
+                             (1.0 - ((1.0 + stats.monthly_interest) ** -stats.n_payments)));
   // Combine original mortgage details and derived stats into one dict
   return stats;
 }
@@ -46,10 +47,11 @@ function tabulatePayments(mortgage) {
 
     // Record that month
     df.push({month: i+1,
-             payment_amount: mortgage.monthly_payment.toFixed(2),
+             payment_amount: parseFloat((mortgage.monthly_payment + mortgage.monthly_insurance)).toFixed(2),
              payments_made: ((i+1.0) * mortgage.monthly_payment).toFixed(2),
              of_which_principal: principal_component.toFixed(2),
              of_which_interest: interest_component.toFixed(2),
+             of_which_insurance: mortgage.monthly_insurance.toFixed(2),
              remaining_principal: remaining_principal.toFixed(2),
              remaining_total: remaining_total.toFixed(2)})
   }
@@ -74,7 +76,7 @@ function plotPlan(df) {
 
 function plotPayments(df) {
   trace_array = createTraces(df,
-                             seriesColumns=["payment_amount", "of_which_principal", "of_which_interest"],
+                             seriesColumns=["payment_amount", "of_which_principal", "of_which_interest", "of_which_insurance"],
                              xColumn="month",
                              hoverColumn="month",
                              lineFill=true);
