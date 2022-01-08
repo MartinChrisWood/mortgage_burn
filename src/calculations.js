@@ -96,5 +96,4 @@ function main() {
   plotPayments(df);
   plotPlan(df);
   writeDictToTable(mortgage, "stats_out");
-  // document.getElementById("calc_space").innerHTML = prettifyTable(df);
 }

@@ -58,6 +58,12 @@ table {
 }
 
 footer {
+  /* position: fixed;
+  bottom: 0;
+  width: 100%;
+  color: #fff;
+  background-color: #000; */
+  width: 100%;
   background-color: white;
   padding: 10px;
   text-align: center;

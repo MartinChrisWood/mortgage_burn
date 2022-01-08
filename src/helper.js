@@ -105,3 +105,14 @@ function writeDictToTable(dict, div_id, wipe=true) {
   target_div.appendChild(table);
   return null;
 }
+
+function reload(elementId){
+    // Forces the refresh of an element
+    // From https://stackoverflow.com/a/10914389
+    var container = document.getElementById(elementId);
+    var content = container.innerHTML;
+    container.innerHTML= content;
+
+   // Confirm
+    console.log("Refreshed");
+}
